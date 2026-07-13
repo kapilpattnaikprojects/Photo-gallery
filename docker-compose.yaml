@@ -1,0 +1,21 @@
+services:
+  backend:
+    build: ./backend
+    container_name: backend
+    ports:
+      - "3000:3000"
+    volumes:
+      - photo-gallery-images:/app/images
+
+  frontend:
+    build: ./frontend
+    container_name: frontend
+    ports:
+      - "80:80"
+    volumes:
+      - photo-gallery-images:/usr/share/nginx/html/images
+    depends_on:
+      - backend
+
+volumes:
+  photo-gallery-images:

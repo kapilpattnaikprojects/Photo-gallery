@@ -1,0 +1,24 @@
+backend/node_modules/
+.env
+
+
+
+
+# Terraform
+**/.terraform/*
+*.tfstate
+*.tfstate.*
+.terraform.lock.hcl
+
+# Terraform plans
+*.tfplan
+
+# Local terraform variables
+terraform.tfvars
+
+# Logs
+*.log
+
+# OS files
+.DS_Store
+Thumbs.db
