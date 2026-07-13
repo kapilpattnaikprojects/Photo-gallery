@@ -36,19 +36,19 @@ jobs:
 
       - name: Build, Tag, and Push Docker Image
         run: |
-          docker build -t photo-gallery-backend ./backend
-          docker tag photo-gallery-backend:latest \
-          ${{ steps.login-ecr.outputs.registry }}/photo-gallery-backend:v1
+          
+          docker build -t photo-gallery-backend:latest \
+          ${{ steps.login-ecr.outputs.registry }}/photo-gallery-backend:backendv1
           docker push \
-          ${{ steps.login-ecr.outputs.registry }}/photo-gallery-backend:v1
+          ${{ steps.login-ecr.outputs.registry }}/photo-gallery-backend:backendv1
 
 
       - name: Build, Tag, and Push Docker Image
         run: |
-          docker build -t photo-gallery-frontend ./frontend
-          docker tag photo-gallery-frontend:latest \
-          ${{ steps.login-ecr.outputs.registry }}/photo-gallery-frontend:v1
+          
+          docker build -t  photo-gallery-frontend:latest \
+          ${{ steps.login-ecr.outputs.registry }}/photo-gallery-frontend:frontendv1
           docker push \
-          ${{ steps.login-ecr.outputs.registry }}/photo-gallery-frontend:v1
+          ${{ steps.login-ecr.outputs.registry }}/photo-gallery-frontend:frontendv1
 
 
