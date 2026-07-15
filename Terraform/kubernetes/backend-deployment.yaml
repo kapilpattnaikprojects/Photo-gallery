@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: photo-gallery-backend
+  labels:
+    app: photo-gallery-backend
+
+spec:
+  replicas: 2
+
+  selector:
+    matchLabels:
+      app: photo-gallery-backend
+
+  template:
+    metadata:
+      labels:
+        app: photo-gallery-backend
+
+    spec:
+      containers:
+        - name: backend
+          image: 279715467865.dkr.ecr.ap-south-2.amazonaws.com/photo-gallery-backend:v1
+
+          ports:
+            - containerPort: 3000
+
+          imagePullPolicy: Always
+
+          resources:
+            requests:
+              cpu: "250m"
+              memory: "256Mi"
+
+            limits:
+              cpu: "500m"
+              memory: "512Mi"
