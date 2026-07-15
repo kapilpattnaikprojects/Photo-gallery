@@ -59,7 +59,7 @@ jobs:
       - name: Push Frontend Image
         run: |
           docker push \
-            ${{ steps.login-ecr.outputs.registry }}/photo-gallery-fronten:${{ env.IMAGE_TAG }}
+            ${{ steps.login-ecr.outputs.registry }}/photo-gallery-fronte:${{ env.IMAGE_TAG }}
 
       ##############################
       # Cleanup
