@@ -1,11 +1,13 @@
 const gallery = document.getElementById("gallery");
 
+// ===========================
 // Load all images
+// ===========================
 function loadGallery() {
 
     gallery.innerHTML = "";
 
-    fetch("http://localhost:3000/photos")
+    fetch("/api/photos")
         .then(response => response.json())
         .then(photos => {
 
@@ -38,7 +40,7 @@ const uploadButton = document.getElementById("uploadBtn");
 
 uploadButton.addEventListener("click", () => {
 
-    console.log("✅ Upload button clicked");
+    console.log("Upload button clicked");
 
     const fileInput = document.getElementById("photo");
 
@@ -60,7 +62,7 @@ uploadButton.addEventListener("click", () => {
 
     console.log("Sending request to backend...");
 
-    fetch("http://localhost:3000/upload", {
+    fetch("/api/upload", {
 
         method: "POST",
 
