@@ -1,10 +1,21 @@
+name: Build and Push Images to ECR
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  id-token: write
+  contents: read
+
 jobs:
   build-and-push:
     runs-on: ubuntu-latest
 
-    permissions:
-      id-token: write
-      contents: read
+    env:
+      AWS_REGION: ap-south-2
+      IMAGE_TAG: v2
 
     steps:
       - name: Checkout Repository
@@ -13,39 +24,54 @@ jobs:
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
-          role-to-assume: arn:aws:iam::279715467865:role/github-ecr-oidc-role
-          aws-region: ap-south-2
+          role-to-assume: arn:aws:iam::<ACCOUNT_ID>:role/<OIDC_ROLE_NAME>
+          aws-region: ${{ env.AWS_REGION }}
 
       - name: Login to Amazon ECR
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v2
 
-      # Build Images
+      ##############################
+      # Backend
+      ##############################
+
       - name: Build Backend Image
         run: |
-          docker build -t ${{ steps.login-ecr.outputs.registry }}/photo-gallery-backend:v1 ./backend
+          docker build \
+            -t ${{ steps.login-ecr.outputs.registry }}/photo-gallery-backend:${{ env.IMAGE_TAG }} \
+            ./backend
+
+      - name: Push Backend Image
+        run: |
+          docker push \
+            ${{ steps.login-ecr.outputs.registry }}/photo-gallery-backend:${{ env.IMAGE_TAG }}
+
+      ##############################
+      # Frontend
+      ##############################
 
       - name: Build Frontend Image
         run: |
-          docker build -t ${{ steps.login-ecr.outputs.registry }}/photo-gallery-frontend:v1 ./frontend
-
-      # Push Images
-      - name: Push Backend Image
-        run: |
-          docker push ${{ steps.login-ecr.outputs.registry }}/photo-gallery-backend:v2
+          docker build \
+            -t ${{ steps.login-ecr.outputs.registry }}/photo-gallery-frontend:${{ env.IMAGE_TAG }} \
+            ./frontend
 
       - name: Push Frontend Image
         run: |
-          docker push ${{ steps.login-ecr.outputs.registry }}/photo-gallery-frontend:v2
+          docker push \
+            ${{ steps.login-ecr.outputs.registry }}/photo-gallery-frontend:${{ env.IMAGE_TAG }}
 
-      # Cleanup if anything failed
-      - name: Cleanup ECR Images
+      ##############################
+      # Cleanup
+      ##############################
+
+      - name: Cleanup ECR Images on Failure
         if: failure()
         run: |
           aws ecr batch-delete-image \
             --repository-name photo-gallery-backend \
-            --image-ids imageTag=v1 || true
+            --image-ids imageTag=${{ env.IMAGE_TAG }} || true
 
           aws ecr batch-delete-image \
             --repository-name photo-gallery-frontend \
-            --image-ids imageTag=v1 || true
+            --image-ids imageTag=${{ env.IMAGE_TAG }} || true
