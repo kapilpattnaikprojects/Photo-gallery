@@ -20,7 +20,7 @@ spec:
     spec:
       containers:
         - name: backend
-          image: 279715467865.dkr.ecr.ap-south-2.amazonaws.com/photo-gallery-backend:V1
+          image: 279715467865.dkr.ecr.ap-south-2.amazonaws.com/photo-gallery-backend:V2
 
           ports:
             - containerPort: 3000
