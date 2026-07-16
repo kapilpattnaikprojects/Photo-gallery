@@ -15,7 +15,7 @@ jobs:
 
     env:
       AWS_REGION: ap-south-2
-      IMAGE_TAG: ${{ github.sha }}
+      IMAGE_TAG: V2
 
     steps:
       - name: Checkout Repository

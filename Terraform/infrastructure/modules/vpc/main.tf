@@ -24,6 +24,10 @@ resource "aws_subnet" "public" {
 
   tags = {
     Name = "photo-gallery-public-${count.index + 1}"
+
+    "kubernetes.io/role/elb" = "1"
+
+    "kubernetes.io/cluster/photo-gallery-eks" = "shared"
   }
 }
 
@@ -37,6 +41,11 @@ resource "aws_subnet" "private" {
 
   tags = {
     Name = "photo-gallery-private-${count.index + 1}"
+
+   "kubernetes.io/role/internal-elb" = "1"
+
+   "kubernetes.io/cluster/photo-gallery-eks" = "shared" 
+   
   }
 }
 
