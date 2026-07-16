@@ -20,7 +20,7 @@ spec:
     spec:
       containers:
         - name: frontend
-          image: 279715467865.dkr.ecr.ap-south-2.amazonaws.com/photo-gallery-frontend:<latest_sha>
+          image: 279715467865.dkr.ecr.ap-south-2.amazonaws.com/photo-gallery-frontend:V1
 
           ports:
             - containerPort: 80
